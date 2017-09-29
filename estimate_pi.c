@@ -5,31 +5,35 @@
 #include <omp.h>
 #include "mkl_vsl.h"
 
+#define batchsize 100
+
 int main(int argc, char **argv)
 {
-
    int niter = atoi(argv[1]);
-   
+   printf("BEG (%f)\n",omp_get_wtime());
    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
    /* ~~~~~~~~~~~~~~~~~PARALLELIZE ME~~~~~~~~~~~~~~~~~~ */
    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
    /* Random Number Generation via MKL Random Number Stream */        
-   float * rand_buffer_x = (float*)malloc(niter*sizeof(float)); 
-   float * rand_buffer_y = (float*)malloc(niter*sizeof(float)); 
+   float * rand_buffer_x = (float*)malloc(batchsize*sizeof(float)); 
+   float * rand_buffer_y = (float*)malloc(batchsize*sizeof(float)); 
    VSLStreamStatePtr stream;
    int SEED = omp_get_thread_num() + time(NULL); /* RNG seed dependent on time of day and thread number*/
    vslNewStream( &stream, VSL_BRNG_SFMT19937, SEED );
-   vsRngUniform( VSL_RNG_METHOD_UNIFORM_STD, stream, niter, rand_buffer_x, 0.0, 1.0 );
-   vsRngUniform( VSL_RNG_METHOD_UNIFORM_STD, stream, niter, rand_buffer_y, 0.0, 1.0 );
    
    /* Loop over Randomly Generated Numbers */
    int count = 0;
-   int i;
-   for(i = 0; i < niter; i++)
+   int i,j;
+   for(j = 0; j < niter; j+=batchsize)
    {
-      float z = rand_buffer_y[i]*rand_buffer_y[i] + rand_buffer_x[i]*rand_buffer_x[i];
-      if (z<=1) count++;
+      vsRngUniform( VSL_RNG_METHOD_UNIFORM_STD, stream, batchsize, rand_buffer_x, 0.0, 1.0 );
+      vsRngUniform( VSL_RNG_METHOD_UNIFORM_STD, stream, batchsize, rand_buffer_y, 0.0, 1.0 );
+      for(i = 0; i < batchsize; i++)
+      {
+         float z = rand_buffer_y[i]*rand_buffer_y[i] + rand_buffer_x[i]*rand_buffer_x[i];
+         if (z<=1) count++;
+      }
    }
 
 
@@ -44,7 +48,8 @@ int main(int argc, char **argv)
 
 
    double pi = (double) count / niter*4;
-   printf("num trials=%d, estimate of pi=%f\n", niter, pi);
+   printf("END (%f)\n",omp_get_wtime());
+   printf("num trials=%d, estimate of pi=%f\n\n", niter, pi);
 
    return 0;
 }

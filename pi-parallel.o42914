@@ -1,0 +1,44 @@
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) cmake/3.9.0     2) curl/7.54.0
+
+BEG (1506648248.177908)
+END (1506648248.182081)
+num trials=1000, estimate of pi=3.152000
+
+BEG (1506648248.185882)
+END (1506648248.191508)
+num trials=2000, estimate of pi=3.136000
+
+BEG (1506648248.195593)
+END (1506648248.199612)
+num trials=4000, estimate of pi=3.153000
+
+BEG (1506648248.202508)
+END (1506648248.206011)
+num trials=8000, estimate of pi=3.147000
+
+BEG (1506648248.208855)
+END (1506648248.211702)
+num trials=16000, estimate of pi=3.128750
+
+BEG (1506648248.214527)
+END (1506648248.218502)
+num trials=32000, estimate of pi=3.139250
+
+BEG (1506648248.221479)
+END (1506648248.225491)
+num trials=64000, estimate of pi=3.146313
+
+BEG (1506648248.228409)
+END (1506648248.234845)
+num trials=128000, estimate of pi=3.142281
+
+BEG (1506648248.237756)
+END (1506648248.241531)
+num trials=256000, estimate of pi=3.144094
+
+BEG (1506648248.244333)
+END (1506648248.247637)
+num trials=512000, estimate of pi=3.143305
+

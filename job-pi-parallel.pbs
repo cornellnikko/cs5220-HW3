@@ -17,5 +17,5 @@ export OMP_NUM_THREADS=12
 
 # Run the computations we want to.
 for niter in {1000,2000,4000,8000,16000,32000,64000,128000,256000,512000}; do
-    ./estimate_pi "$niter"
+    ./estimate_pi_parallel "$niter"
 done
